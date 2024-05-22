@@ -482,6 +482,7 @@ SC_MODULE(TB)
         
         SC_THREAD(clockGeneration);
         SC_THREAD(resetAssertion);
+        SC_THREAD(timing);
 
         sc_trace_file* VCDFile;
         VCDFile = sc_create_vcd_trace_file("wave_result");
@@ -489,11 +490,17 @@ SC_MODULE(TB)
         sc_trace(VCDFile, rst, "rst");
         sc_trace(VCDFile, start, "start");
         sc_trace(VCDFile, done, "done");
-
 	}
 
 	void clockGeneration();
 	void resetAssertion();
+
+    void timing() {
+        while (done.read() != '1') {
+            wait(10, SC_NS);
+        }
+        cout << endl << "at time: " << sc_time_stamp() << " | done = " << done.read() << endl;
+    }
 
 };
 
