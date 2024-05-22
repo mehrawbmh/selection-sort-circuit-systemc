@@ -31,7 +31,7 @@ CounterNbit<bits>::CounterNbit(sc_module_name)
     temp = 0;
 
     SC_THREAD(eval);
-    sensitive << clk.pos() << rst;
+    sensitive << clk << rst;
 }
 
 template<int bits>
@@ -120,9 +120,9 @@ void RegisterFile<addressBits, wordSize>::memwrite()
     {
         if (clk.event() && clk == '1') {
             if (write == '1') {
-                cout << "writing @" << Addr.read().to_uint() << ": " << Din << endl;
                 ad = Addr; 
                 mem[ad] = Din;
+                cout << "writing @" << ad << ": " << Din.read() << "( " <<  mem[ad] << " )" << endl;
             }
         }
         wait();
@@ -184,6 +184,9 @@ public:
     RegisterNbit(sc_module_name);
 
     void registering();
+    const char* getName() {
+        return sc_get_current_process_b()->get_parent_object()->basename();
+    }
 };
 
 template<int bits>
@@ -201,11 +204,12 @@ void RegisterNbit<bits>::registering()
     while (true) {
         // cout << "\n****RUNNING REG PART ***\n";
         if (rst.event() && rst == '1') {
-            cout << sc_core::sc_get_current_process_b()->get_parent_object()->name() << ": ";
-            cout << "reg reset happen" << endl;
+            cout << getName() << ": ";
+            // cout << "reg reset happen" << endl;
             temp = 0;
         } else if (clk.event() && clk == '1') {
             if (loadEnable == '1') {
+                // cout << getName() << ": loaded with value of " << dataIn.read().to_uint() << endl;
                 // cout << to_string(sc_module_name) << " loading happened\n";
                 temp = dataIn;
             }

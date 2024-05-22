@@ -8,7 +8,7 @@ int sc_main(int argc, char* argv[]) {
 
     auto *tb = new TB("myTestbench");
     
-    sc_start(50000, SC_NS);
+    sc_start(2500000, SC_NS);
 
     cout << "program ended" << endl;
     return 0;

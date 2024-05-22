@@ -71,9 +71,9 @@ void SSC::report()
     //     cout << "start: " << start << endl;
     //     cout << "done: " << done << endl;
 
-        cout << "count1: " << count1.read().to_uint() << endl;
-        cout << "count2: " << count2.read().to_uint() << endl;
-        cout << "lt: " << lt << endl << endl;
+        // cout << "count1: " << count1.read().to_uint() << endl;
+        // cout << "count2: " << count2.read().to_uint() << endl;
+        // cout << "lt: " << lt << endl << endl;
         wait(20, SC_NS);
     }
     wait();
@@ -103,6 +103,8 @@ void Controller::combinational()
         break;
     
     case 1: //load counter2
+        // cout << "when got here: cnt1 " << count1.read().to_int() << endl;
+        
         ldCnt2 = SC_LOGIC_1;
         rfRdEn = SC_LOGIC_1;
         selAdr = "00";
@@ -115,16 +117,23 @@ void Controller::combinational()
         ldMinAdr = SC_LOGIC_1;
         ldTmp = SC_LOGIC_1;
         selMin = SC_LOGIC_0;
+        // cout << "when got here2: cnt2 " << count2.read().to_int() << endl;
         
         nState = 3;
         break;
 
     case 3: // inner loop >> update counter2
         enCnt2 = SC_LOGIC_1;
+        // selAdr = "01";
+        // rfRdEn = SC_LOGIC_1;
+
+        nState = (count2.read().to_uint() < 255) ? 33 : 6;
+        break;
+
+    case 33:
         selAdr = "01";
         rfRdEn = SC_LOGIC_1;
-
-        nState = (count2.read().to_uint() < 255) ? 4 : 6;
+        nState = 4;
         break;
 
     case 4: // compare    
