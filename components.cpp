@@ -102,9 +102,7 @@ void Controller::combinational()
         nState = (start == "1") ? 1 : 0;
         break;
     
-    case 1: //load counter2
-        // cout << "when got here: cnt1 " << count1.read().to_int() << endl;
-        
+    case 1: //load counter2        
         ldCnt2 = SC_LOGIC_1;
         rfRdEn = SC_LOGIC_1;
         selAdr = "00";
@@ -117,20 +115,17 @@ void Controller::combinational()
         ldMinAdr = SC_LOGIC_1;
         ldTmp = SC_LOGIC_1;
         selMin = SC_LOGIC_0;
-        // cout << "when got here2: cnt2 " << count2.read().to_int() << endl;
         
         nState = 3;
         break;
 
     case 3: // inner loop >> update counter2
         enCnt2 = SC_LOGIC_1;
-        // selAdr = "01";
-        // rfRdEn = SC_LOGIC_1;
 
-        nState = (count2.read().to_uint() < 255) ? 33 : 6;
+        nState = (count2.read().to_uint() < 255) ? 10 : 6;
         break;
 
-    case 33:
+    case 10:
         selAdr = "01";
         rfRdEn = SC_LOGIC_1;
         nState = 4;
@@ -158,8 +153,6 @@ void Controller::combinational()
 
 
     case 7: //Swap2
-        // selMin = SC_LOGIC_1;
-        // ldTmp = SC_LOGIC_1;
         selAdr = "00";
         rfWrEn = SC_LOGIC_1;
 

@@ -357,20 +357,6 @@ SC_MODULE(Datapath)
         cmp->A(readData);
         cmp->B(minValOut);
         cmp->lt(lt);
-
-        // initValues();
-    }
-
-    void initValues() 
-    {
-        minAdrOut = "0000000";
-        address = "0000000";
-        minValOut = "0000000000000000";
-        tempRegIn = "0000000000000000";
-        writeData = "0000000000000000";
-        readData = "0000000000000000";
-        count1 = "00000000";
-        count2 = "00000000";
     }
 };
 
@@ -410,17 +396,6 @@ SC_MODULE(SSC)
     SC_CTOR(SSC) {
         count1LoadData = "00000000";
         selAdr = "00";
-
-        ldTmp = SC_LOGIC_1;
-        enCnt1 = SC_LOGIC_1;
-        enCnt2 = SC_LOGIC_1;
-        rfRdEn = SC_LOGIC_1;
-        rfWrEn = SC_LOGIC_0;
-        ldMinAdr = SC_LOGIC_0;
-        ldMinVal = SC_LOGIC_1;
-        selMin = SC_LOGIC_0;
-        ldCnt1 = SC_LOGIC_0;
-        ldCnt2 = SC_LOGIC_1;
         
         dp = new Datapath("DataPathInstance");
         dp->clk(clk);
